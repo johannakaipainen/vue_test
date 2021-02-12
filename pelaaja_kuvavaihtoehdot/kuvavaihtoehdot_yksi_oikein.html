@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pelaajanäkymä: kuvavaihtoehdot</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <style>
+        img {
+            max-width: 100%;
+        }
+
+        .flex-container {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+
+        .flex-container div {
+            margin: 5px;
+            width: 47%;
+            flex-direction: column;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <h2> {{ question }}</h2>
+        <div v-show="!answered" class="flex-container">
+            <div v-for="answer in answers">
+                <img v-bind:src="answer.image" v-on:click="setAsAnswered(answer.correct)">
+            </div>
+        </div>
+        <div>
+            <div v-show="answered">
+                <h3 v-if="this.selectedAnswer">Oikein meni!</h3>
+                <h3 v-else>Väärin meni!</h3>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    var app = new Vue({
+        el: "#app",
+        data: {
+            question: "Missä kuvassa on lunta?",
+            answered: false,
+            selectedAnswer: false,
+            answers: [
+                {
+                    image: "IMG_0424.JPG",
+                    correct: true,
+                    actions: []
+                },
+
+                {
+                    image: "IMG_1615.JPG",
+                    correct: false,
+                    actions: []
+                },
+
+                {
+                    image: "IMG_3.jpg",
+                    correct: false,
+                    actions: []
+                },
+
+                {
+                    image: "IMG_5923.JPG",
+                    correct: false,
+                    actions: []
+                }
+            ]
+        },
+
+        methods: {
+            setAsAnswered: function (input) {
+                this.answered = true;
+                this.selectedAnswer = input;
+                console.log(this.selectedAnswer);
+            }
+        }
+    });
+
+</script>
+
+</html>

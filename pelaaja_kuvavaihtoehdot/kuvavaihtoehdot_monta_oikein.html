@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monta oikein</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <style>
+
+        html {
+            box-sizing: border-box; 
+            max-width: 100%;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            border: 0;
+            font-size: 100%;
+        }
+
+        *,*:before, *:after {
+            box-sizing: inherit;
+        }
+
+        .selected {
+            border: solid purple 8px;
+        }
+
+        li {
+            list-style-type: none;
+        }
+
+        button {
+            padding: 10px;
+            font-size: 20px;
+            margin-left: 45px;
+        }
+
+        img {
+            max-width: 100%;
+        }
+
+        .flex-container {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+
+        .flex-container div {
+            margin: 5px;
+            width: 45%;
+            flex-direction: column;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <h1> {{ question }}</h1>
+        <div v-show="!answered" class="flex-container">
+            <div v-for="answer in answers"
+                v-on:click="selected.includes(answer.id) ? selected.splice(selected.indexOf(answer.id), 1) : selected.push(answer.id)"
+                v-bind:class="{selected: selected.includes(answer.id)}">
+                <img v-bind:src="answer.image">
+            </div>
+        </div>
+
+        <div v-show="answered">
+            <h3 v-if="selectedAnswer">Oikein meni!</h3>
+            <h3 v-else>Väärin meni!</h3>
+        </div>
+
+        <div v-show="!answered">
+            <button v-on:click="checkAnswers">Tarkista</button>
+        </div>
+    </div>
+</body>
+
+<script>
+    var app = new Vue({
+        el: "#app",
+        data: {
+            question: "Missä kuvissa on lunta?",
+            answered: false,
+            selectedAnswer: false,
+            selected: [],
+            points: 0,
+            answers: [
+                {
+                    image: "IMG_0424.JPG",
+                    correct: true,
+                    actions: [
+                        {
+                            action: null, 
+                            target: null
+                    }],
+                    id: 1
+                },
+
+                {
+                    image: "IMG_1615.JPG",
+                    correct: true,
+                    actions: [
+                        {
+                            action: null, 
+                            target: null
+                    }],
+                    id: 2
+                },
+
+                {
+                    image: "IMG_3.jpg",
+                    correct: false,
+                    actions: [
+                        {
+                            action: null, 
+                            target: null
+                    }],
+                    id: 3
+                },
+
+                {
+                    image: "IMG_5923.JPG",
+                    correct: false,
+                    actions: [
+                        {
+                            action: null, 
+                            target: null
+                    }],
+                    id: 4
+                }
+            ]
+        },
+
+        methods: {
+            checkAnswers: function () {
+                this.answered = true;
+                this.selectedAnswer = true;
+                console.log(this.selected);
+
+                for (let i = 0; i < this.answers.length; i++) {
+                    let answer = this.answers[i];
+                    console.log(answer);
+
+                    if (answer.correct !== this.selected.includes(answer.id)) {
+                        this.selectedAnswer = false;
+                        break;
+                    }
+
+                    if (this.answered === true){
+                        this.points++;
+                        console.log(this.points);
+                    }
+                }
+            }
+        }
+    });
+
+</script>
+
+</html>
